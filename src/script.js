@@ -1,3 +1,4 @@
+import * as THREE from 'three';
 //Scene Mesh Camera Renderer
 const scene = new THREE.Scene();
 
@@ -6,7 +7,7 @@ const scene = new THREE.Scene();
 const geometry = new THREE.BoxGeometry(1, 1, 1);
 const material = new THREE.MeshBasicMaterial({ color: 'purple' });
 const cube = new THREE.Mesh(geometry, material);
-// scene.add(cube);
+scene.add(cube);
 
 //SPHERE
 // const sphereGeo = new THREE.SphereGeometry(15, 32, 16);
@@ -14,7 +15,7 @@ const sphereGeo = new THREE.SphereGeometry(1, 32, 16);
 const sphereMaterial = new THREE.MeshBasicMaterial({ color: 'blue' });
 const sphere = new THREE.Mesh(sphereGeo, sphereMaterial);
 // const wireframe = new THREE.WireFrameGeometry(sphereGeo);
-scene.add(sphere);
+// scene.add(sphere);
 
 //Camera
 const aspect = {
