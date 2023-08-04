@@ -1,13 +1,22 @@
 * {
+  box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
 
 body {
-  height: 100vh;
+  background-color: blue;
 }
+
 .draw {
   position: fixed;
   top: 0;
   left: 0;
+  background-color: blue;
+}
+
+.box {
+  width: 100px;
+  height: 100px;
+  background-color: purple;
 }
