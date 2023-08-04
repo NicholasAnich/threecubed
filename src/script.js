@@ -1,21 +1,60 @@
 import * as THREE from 'three';
+import gsap from 'gsap';
 //Scene Mesh Camera Renderer
 const scene = new THREE.Scene();
-
 //Mesh / Objects
 // CUBE
-const geometry = new THREE.BoxGeometry(1, 1, 1);
-const material = new THREE.MeshBasicMaterial({ color: 'purple' });
-const cube = new THREE.Mesh(geometry, material);
-scene.add(cube);
+const geometry1 = new THREE.BoxGeometry(0.5, 0.5, 0.5);
+const material1 = new THREE.MeshBasicMaterial({ color: 'green' });
+const cubeGreen = new THREE.Mesh(geometry1, material1);
+cubeGreen.position.set(0, 0, 1);
+
+const geometry2 = new THREE.BoxGeometry(0.5, 0.5, 0.5);
+const material2 = new THREE.MeshBasicMaterial({ color: 'purple' });
+const cubePurple = new THREE.Mesh(geometry2, material2);
+cubePurple.position.set(1, 0, 1);
+
+const geometry3 = new THREE.BoxGeometry(0.5, 0.5, 0.5);
+const material3 = new THREE.MeshBasicMaterial({ color: 'yellow' });
+const cubeYellow = new THREE.Mesh(geometry3, material3);
+cubeYellow.position.set(-1, 0, 1);
+
+const geometry4 = new THREE.BoxGeometry(0.5, 0.5, 0.5);
+const material4 = new THREE.MeshBasicMaterial({ color: 'pink' });
+const cubePink = new THREE.Mesh(geometry4, material4);
+cubePink.position.set(-1, 1, 1);
+
+const geometry5 = new THREE.BoxGeometry(0.5, 0.5, 0.5);
+const material5 = new THREE.MeshBasicMaterial({ color: 'blue' });
+const cubeBlue = new THREE.Mesh(geometry5, material5);
+cubeBlue.position.set(0, 1, 1);
+
+const geometry6 = new THREE.BoxGeometry(0.5, 0.5, 0.5);
+const material6 = new THREE.MeshBasicMaterial({ color: 'white' });
+const cubeWhite = new THREE.Mesh(geometry6, material6);
+cubeWhite.position.set(1, 1, 1);
 
 //SPHERE
-// const sphereGeo = new THREE.SphereGeometry(15, 32, 16);
-const sphereGeo = new THREE.SphereGeometry(1, 32, 16);
+const sphereGeo = new THREE.SphereGeometry(0.5, 32, 16);
 const sphereMaterial = new THREE.MeshBasicMaterial({ color: 'blue' });
 const sphere = new THREE.Mesh(sphereGeo, sphereMaterial);
+sphere.position.set(1, 0, 1);
 // const wireframe = new THREE.WireFrameGeometry(sphereGeo);
-// scene.add(sphere);
+// scene.add(cube, sphere);
+
+scene.add(cubePurple, cubePink, cubeBlue, cubeWhite, cubeYellow, cubeGreen);
+
+// Mouse Listener
+const cursor = {
+  x: 0,
+  y: 0,
+};
+
+window.addEventListener('mousemove', (event) => {
+  cursor.x = event.clientX / window.innerWidth - 0.5;
+  cursor.y = event.clientY / window.innerHeight - 0.5;
+  console.log(cursor.x, cursor.y);
+});
 
 //Camera
 const aspect = {
@@ -37,8 +76,9 @@ const clock = new THREE.Clock();
 
 function animate() {
   const elapsedTime = clock.getElapsedTime();
+  //LookAt
+  cubeGreen.lookAt(new THREE.Vector3(cursor.x, -cursor.y));
 
-  cube.rotation.y = elapsedTime;
   renderer.render(scene, camera);
   window.requestAnimationFrame(animate);
 }
