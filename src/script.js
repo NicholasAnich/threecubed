@@ -1,7 +1,10 @@
 import * as THREE from 'three';
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import gsap from 'gsap';
+
 //Scene Mesh Camera Renderer
 const scene = new THREE.Scene();
+
 //Mesh / Objects
 // CUBE
 const geometry1 = new THREE.BoxGeometry(0.5, 0.5, 0.5);
@@ -53,7 +56,7 @@ const cursor = {
 window.addEventListener('mousemove', (event) => {
   cursor.x = event.clientX / window.innerWidth - 0.5;
   cursor.y = event.clientY / window.innerHeight - 0.5;
-  console.log(cursor.x, cursor.y);
+  // console.log(cursor.x, cursor.y);
 });
 
 //Camera
@@ -62,6 +65,7 @@ const aspect = {
   height: window.innerHeight,
 };
 
+// const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0.1, 1000);
 const camera = new THREE.PerspectiveCamera(75, aspect.width / aspect.height);
 camera.position.z = 5;
 scene.add(camera);
@@ -71,13 +75,35 @@ const canvas = document.querySelector('.draw');
 const renderer = new THREE.WebGLRenderer({ canvas });
 renderer.setSize(aspect.width, aspect.height); //Renderer size
 
+const orbitControls = new OrbitControls(camera, canvas);
+// orbitControls.autoRotate = true;
+// orbitControls.autoRotateSpeed = 6;
+orbitControls.enableDamping = true;
+orbitControls.dampingFactor = 0.01;
+
+//Resizing
+window.addEventListener('resize', () => {
+  // New Size
+  aspect.width = window.innerWidth;
+  aspect.height = window.innerHeight;
+
+  //new AspectRatio
+  camera.aspect = aspect.width / aspect.height;
+  camera.updateProjectionMatrix();
+
+  //new RendererSize
+  renderer.setSize(aspect.width, aspect.height);
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+});
+
 // Clock Class
 const clock = new THREE.Clock();
 
 function animate() {
   const elapsedTime = clock.getElapsedTime();
+  orbitControls.update();
   //LookAt
-  cubeGreen.lookAt(new THREE.Vector3(cursor.x, -cursor.y));
+  cubeGreen.lookAt(new THREE.Vector3(-cursor.x, cursor.y));
 
   renderer.render(scene, camera);
   window.requestAnimationFrame(animate);
