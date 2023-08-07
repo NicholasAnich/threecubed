@@ -5,10 +5,31 @@ import gsap from 'gsap';
 //Scene Mesh Camera Renderer
 const scene = new THREE.Scene();
 
+//LoadingManger
+const loadingManager = new THREE.LoadingManager();
+loadingManager.onStart = () => {
+  console.log('start');
+};
+loadingManager.onLoad = () => {
+  console.log('Loading . . .');
+};
+loadingManager.onProgress = () => {
+  console.log('Progress');
+};
+loadingManager.onError = () => {
+  console.log('Error!');
+};
+//texture Loader
+const textureLoader = new THREE.TextureLoader(loadingManager);
+const colorTexture = textureLoader.load('/texture/color.jpg');
+
 //Mesh / Objects
 // CUBE
-const geometry1 = new THREE.BoxGeometry(0.5, 0.5, 0.5);
-const material1 = new THREE.MeshBasicMaterial({ color: 'green' });
+const geometry1 = new THREE.BoxBufferGeometry(0.5, 0.5, 0.5, 2, 2, 2);
+const material1 = new THREE.MeshBasicMaterial({
+  color: 'green',
+  wireframe: true,
+});
 const cubeGreen = new THREE.Mesh(geometry1, material1);
 cubeGreen.position.set(0, 0, 1);
 
@@ -28,8 +49,9 @@ const cubePink = new THREE.Mesh(geometry4, material4);
 cubePink.position.set(-1, 1, 1);
 
 const geometry5 = new THREE.BoxGeometry(0.5, 0.5, 0.5);
-const material5 = new THREE.MeshBasicMaterial({ color: 'blue' });
+const material5 = new THREE.MeshBasicMaterial({ map: colorTexture });
 const cubeBlue = new THREE.Mesh(geometry5, material5);
+console.log(geometry5);
 cubeBlue.position.set(0, 1, 1);
 
 const geometry6 = new THREE.BoxGeometry(0.5, 0.5, 0.5);
@@ -37,15 +59,31 @@ const material6 = new THREE.MeshBasicMaterial({ color: 'white' });
 const cubeWhite = new THREE.Mesh(geometry6, material6);
 cubeWhite.position.set(1, 1, 1);
 
+//Triangle
+const triangleGeometry = new THREE.PlaneBufferGeometry(1, 1);
+// const verticesArray = new Float32Array([0, 0, 0, 0, 1, 0, 1, 0, 0]);
+// const positionsAttribute = new THREE.BufferAttribute(verticesArray, 3);
+// geometry1.setAttribute('position', positionsAttribute);
+
 //SPHERE
 const sphereGeo = new THREE.SphereGeometry(0.5, 32, 16);
-const sphereMaterial = new THREE.MeshBasicMaterial({ color: 'blue' });
+const sphereMaterial = new THREE.MeshBasicMaterial({
+  map: colorTexture,
+});
 const sphere = new THREE.Mesh(sphereGeo, sphereMaterial);
-sphere.position.set(1, 0, 1);
+sphere.position.set(0, -1, 1);
 // const wireframe = new THREE.WireFrameGeometry(sphereGeo);
 // scene.add(cube, sphere);
 
-scene.add(cubePurple, cubePink, cubeBlue, cubeWhite, cubeYellow, cubeGreen);
+scene.add(
+  cubePurple,
+  cubePink,
+  cubeBlue,
+  cubeWhite,
+  cubeYellow,
+  cubeGreen,
+  sphere
+);
 
 // Mouse Listener
 const cursor = {
@@ -104,6 +142,11 @@ function animate() {
   orbitControls.update();
   //LookAt
   cubeGreen.lookAt(new THREE.Vector3(-cursor.x, cursor.y));
+
+  sphere.rotation.y = elapsedTime * 0.125;
+  sphere.rotation.x = elapsedTime * 0.125;
+  // sphere.position.x = Math.sin(elapsedTime * 0.25);
+  // sphere.position.y = Math.cos(elapsedTime * 0.25);
 
   renderer.render(scene, camera);
   window.requestAnimationFrame(animate);
