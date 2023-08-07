@@ -5,6 +5,12 @@ import gsap from 'gsap';
 //Scene Mesh Camera Renderer
 const scene = new THREE.Scene();
 
+// Lights
+const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+const pointLight = new THREE.PointLight(0xffffff, 0.5);
+pointLight.position.set(0, 2, 2);
+scene.add(ambientLight, pointLight);
+
 //LoadingManger
 const loadingManager = new THREE.LoadingManager();
 loadingManager.onStart = () => {
@@ -21,7 +27,26 @@ loadingManager.onError = () => {
 };
 //texture Loader
 const textureLoader = new THREE.TextureLoader(loadingManager);
+
 const colorTexture = textureLoader.load('/texture/color.jpg');
+const otherTextureLoader = new THREE.TextureLoader(loadingManager);
+const otherColorTexture = otherTextureLoader.load('/texture/Normal.jpg');
+const matcaptTexture = textureLoader.load('/texture/mat2.png');
+const bumpTexture = textureLoader.load('/texture/bump.jpg');
+const displacementTexture = textureLoader.load('/texture/displacementMap.jpg');
+
+//Cube texture Loader
+const cubeTextureLoader = new THREE.CubeTextureLoader();
+const envTexture = cubeTextureLoader.load([
+  '/texture/env/px.png',
+  '/texture/env/nx.png',
+  '/texture/env/py.png',
+  '/texture/env/ny.png',
+  '/texture/env/pz.png',
+  '/texture/env/nz.png',
+]);
+
+scene.background = envTexture;
 
 //Mesh / Objects
 // CUBE
@@ -40,24 +65,38 @@ cubePurple.position.set(1, 0, 1);
 
 const geometry3 = new THREE.BoxGeometry(0.5, 0.5, 0.5);
 const material3 = new THREE.MeshBasicMaterial({ color: 'yellow' });
+material3.color = new THREE.Color(0xf36886);
 const cubeYellow = new THREE.Mesh(geometry3, material3);
 cubeYellow.position.set(-1, 0, 1);
 
 const geometry4 = new THREE.BoxGeometry(0.5, 0.5, 0.5);
-const material4 = new THREE.MeshBasicMaterial({ color: 'pink' });
+const material4 = new THREE.MeshBasicMaterial({ color: 'magenta' });
 const cubePink = new THREE.Mesh(geometry4, material4);
 cubePink.position.set(-1, 1, 1);
 
-const geometry5 = new THREE.BoxGeometry(0.5, 0.5, 0.5);
-const material5 = new THREE.MeshBasicMaterial({ map: colorTexture });
+// MATCAP
+const geometry5 = new THREE.TorusBufferGeometry(0.3, 0.2, 32, 32);
+const material5 = new THREE.MeshStandardMaterial();
+// const material5 = new THREE.MeshMatcapMaterial();
+// material5.matcap = matcaptTexture;
+// material5.shininess = 200;
+// material5.specular = new THREE.Color('red');
+material5.metalness = 0.35;
+material5.roughness = 0.2;
+
 const cubeBlue = new THREE.Mesh(geometry5, material5);
-console.log(geometry5);
 cubeBlue.position.set(0, 1, 1);
 
-const geometry6 = new THREE.BoxGeometry(0.5, 0.5, 0.5);
-const material6 = new THREE.MeshBasicMaterial({ color: 'white' });
+const geometry6 = new THREE.SphereBufferGeometry(0.5, 32, 32);
+const material6 = new THREE.MeshStandardMaterial();
 const cubeWhite = new THREE.Mesh(geometry6, material6);
 cubeWhite.position.set(1, 1, 1);
+material6.metalness = 0.9;
+material6.roughness = 0.1;
+material6.envMap = envTexture;
+// material6.map = colorTexture;
+// material6.displacementMap = displacementTexture;
+// material6.bumpMap = bumpTexture;
 
 //Triangle
 const triangleGeometry = new THREE.PlaneBufferGeometry(1, 1);
