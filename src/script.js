@@ -1,9 +1,15 @@
 import * as THREE from 'three';
+import * as dat from 'dat.gui';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import gsap from 'gsap';
 
 //Scene Mesh Camera Renderer
 const scene = new THREE.Scene();
+
+// Debugging
+const gui = new dat.GUI();
+
+//1) Range
 
 // Lights
 const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
@@ -58,10 +64,23 @@ const material1 = new THREE.MeshBasicMaterial({
 const cubeGreen = new THREE.Mesh(geometry1, material1);
 cubeGreen.position.set(0, 0, 1);
 
+// CUBE PURPLE
+const materialColor = {
+  color: 0xffffff,
+};
 const geometry2 = new THREE.BoxGeometry(0.5, 0.5, 0.5);
 const material2 = new THREE.MeshBasicMaterial({ color: 'purple' });
 const cubePurple = new THREE.Mesh(geometry2, material2);
 cubePurple.position.set(1, 0, 1);
+
+// 1) RANGE GUI
+gui.add(cubePurple.position, 'x').min(-3).max(3).step(0.1).name('x cubePurple');
+// 2) BOOLEAN
+gui.add(material2, 'wireframe');
+// 3) COLOR
+gui.addColor(materialColor, 'color').onChange(() => {
+  material2.color.set(materialColor.color);
+});
 
 const geometry3 = new THREE.BoxGeometry(0.5, 0.5, 0.5);
 const material3 = new THREE.MeshBasicMaterial({ color: 'yellow' });
