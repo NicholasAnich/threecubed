@@ -12,11 +12,37 @@ const gui = new dat.GUI();
 //1) Range
 
 // Lights
-const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
-const pointLight = new THREE.PointLight(0xffffff, 0.5);
-pointLight.position.set(0, 2, 2);
-scene.add(ambientLight, pointLight);
+// const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+// const pointLight = new THREE.PointLight(0xffffff, 0.5);
+// pointLight.position.set(0, 2, 2);
+// scene.add(ambientLight, pointLight);
 
+const ambientLight = new THREE.AmbientLight('#ffffff', 1);
+scene.add(ambientLight);
+gui
+  .add(ambientLight, 'intensity')
+  .min(0)
+  .max(1)
+  .step(0.1)
+  .name('Intensity One');
+
+const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
+scene.add(directionalLight);
+directionalLight.position.set(0, 2, 0);
+gui
+  .add(directionalLight, 'intensity')
+  .min(0)
+  .max(1)
+  .step(0.01)
+  .name('Intensity Two');
+gui.add(directionalLight.position, 'x').min(-3).max(3).step(0.01).name('X Dir');
+gui.add(directionalLight.position, 'y').min(-3).max(3).step(0.01).name('Y Dir');
+
+// DirectionalLightHelper
+const directionalLightHelper = new THREE.DirectionalLightHelper(
+  directionalLight
+);
+scene.add(directionalLightHelper);
 //LoadingManger
 const loadingManager = new THREE.LoadingManager();
 loadingManager.onStart = () => {
@@ -69,7 +95,7 @@ const materialColor = {
   color: 0xffffff,
 };
 const geometry2 = new THREE.BoxGeometry(0.5, 0.5, 0.5);
-const material2 = new THREE.MeshBasicMaterial({ color: 'purple' });
+const material2 = new THREE.MeshStandardMaterial({ color: 'purple' });
 const cubePurple = new THREE.Mesh(geometry2, material2);
 cubePurple.position.set(1, 0, 1);
 
