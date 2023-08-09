@@ -1,21 +1,21 @@
-const CopyWebpackPlugin = require("copy-webpack-plugin");
-const HtmlWebpackPlugin = require("html-webpack-plugin");
-const MiniCSSExtractPlugin = require("mini-css-extract-plugin");
-const path = require("path");
+const CopyWebpackPlugin = require('copy-webpack-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const MiniCSSExtractPlugin = require('mini-css-extract-plugin');
+const path = require('path');
 
 module.exports = {
-  entry: path.resolve(__dirname, "../src/script.js"),
+  entry: path.resolve(__dirname, '../src/shadows.js'),
   output: {
-    filename: "bundle.[contenthash].js",
-    path: path.resolve(__dirname, "../dist"),
+    filename: 'bundle.[contenthash].js',
+    path: path.resolve(__dirname, '../dist'),
   },
-  devtool: "source-map",
+  devtool: 'source-map',
   plugins: [
     new CopyWebpackPlugin({
-      patterns: [{ from: path.resolve(__dirname, "../static") }],
+      patterns: [{ from: path.resolve(__dirname, '../static') }],
     }),
     new HtmlWebpackPlugin({
-      template: path.resolve(__dirname, "../src/index.html"),
+      template: path.resolve(__dirname, '../src/index.html'),
       minify: true,
     }),
     new MiniCSSExtractPlugin(),
@@ -24,27 +24,27 @@ module.exports = {
     rules: [
       {
         test: /\.(html)$/,
-        use: ["html-loader"],
+        use: ['html-loader'],
       },
 
       {
         test: /\.js$/,
         exclude: /node_modules/,
-        use: ["babel-loader"],
+        use: ['babel-loader'],
       },
 
       {
         test: /\.css$/,
-        use: [MiniCSSExtractPlugin.loader, "css-loader"],
+        use: [MiniCSSExtractPlugin.loader, 'css-loader'],
       },
 
       {
         test: /\.(jpg|png|gif|svg)$/,
         use: [
           {
-            loader: "file-loader",
+            loader: 'file-loader',
             options: {
-              outputPath: "assets/images/",
+              outputPath: 'assets/images/',
             },
           },
         ],
@@ -54,9 +54,9 @@ module.exports = {
         test: /\.(ttf|eot|woff|woff2)$/,
         use: [
           {
-            loader: "file-loader",
+            loader: 'file-loader',
             options: {
-              outputPath: "assets/fonts/",
+              outputPath: 'assets/fonts/',
             },
           },
         ],
@@ -65,7 +65,7 @@ module.exports = {
       {
         test: /\.(glsl|vs|fs|frag)$/,
         exclude: /node_modules/,
-        use: ["raw-loader"],
+        use: ['raw-loader'],
       },
     ],
   },
