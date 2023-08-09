@@ -18,31 +18,54 @@ const gui = new dat.GUI();
 // scene.add(ambientLight, pointLight);
 
 const ambientLight = new THREE.AmbientLight('#ffffff', 1);
-scene.add(ambientLight);
-gui
-  .add(ambientLight, 'intensity')
-  .min(0)
-  .max(1)
-  .step(0.1)
-  .name('Intensity One');
+// scene.add(ambientLight);
+// gui
+//   .add(ambientLight, 'intensity')
+//   .min(0)
+//   .max(1)
+//   .step(0.1)
+//   .name('Intensity One');
 
 const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
-scene.add(directionalLight);
+// scene.add(directionalLight);
 directionalLight.position.set(0, 2, 0);
-gui
-  .add(directionalLight, 'intensity')
-  .min(0)
-  .max(1)
-  .step(0.01)
-  .name('Intensity Two');
-gui.add(directionalLight.position, 'x').min(-3).max(3).step(0.01).name('X Dir');
-gui.add(directionalLight.position, 'y').min(-3).max(3).step(0.01).name('Y Dir');
+// gui
+//   .add(directionalLight, 'intensity')
+//   .min(0)
+//   .max(1)
+//   .step(0.01)
+//   .name('Intensity Two');
+// gui.add(directionalLight.position, 'x').min(-3).max(3).step(0.01).name('X Dir');
+// gui.add(directionalLight.position, 'y').min(-3).max(3).step(0.01).name('Y Dir');
 
-// DirectionalLightHelper
+// DirectionalLightHelper;
 const directionalLightHelper = new THREE.DirectionalLightHelper(
   directionalLight
 );
-scene.add(directionalLightHelper);
+// scene.add(directionalLightHelper);
+
+//HemisphereLight
+const hemisphereLight = new THREE.HemisphereLight('magenta', 'blue', 0);
+// scene.add(hemisphereLight);
+const hemisphereLightHelper = new THREE.HemisphereLightHelper(hemisphereLight);
+// scene.add(hemisphereLightHelper);
+
+// Point Light
+const pointLight = new THREE.PointLight('red', 1, 50);
+scene.add(pointLight);
+pointLight.position.set(0, 2, 0);
+const pointLightHelper = new THREE.PointLightHelper(pointLight);
+scene.add(pointLightHelper);
+gui.add(pointLight.position, 'x').min(-3).max(3).step(0.1).name('X Point');
+gui.add(pointLight.position, 'y').min(-3).max(3).step(0.1).name('Y Point');
+gui.add(pointLight.position, 'z').min(-3).max(3).step(0.1).name('Z Point');
+gui
+  .add(pointLight, 'intensity')
+  .min(-5)
+  .max(5)
+  .step(0.1)
+  .name('Point Intensity');
+
 //LoadingManger
 const loadingManager = new THREE.LoadingManager();
 loadingManager.onStart = () => {
@@ -78,7 +101,7 @@ const envTexture = cubeTextureLoader.load([
   '/texture/env/nz.png',
 ]);
 
-scene.background = envTexture;
+// scene.background = envTexture;
 
 //Mesh / Objects
 // CUBE
@@ -120,17 +143,17 @@ const cubePink = new THREE.Mesh(geometry4, material4);
 cubePink.position.set(-1, 1, 1);
 
 // MATCAP
-const geometry5 = new THREE.TorusBufferGeometry(0.3, 0.2, 32, 32);
+const geometry5 = new THREE.TorusGeometry(0.3, 0.2, 32, 32);
 const material5 = new THREE.MeshStandardMaterial();
 // const material5 = new THREE.MeshMatcapMaterial();
 // material5.matcap = matcaptTexture;
 // material5.shininess = 200;
 // material5.specular = new THREE.Color('red');
-material5.metalness = 0.35;
-material5.roughness = 0.2;
+// material5.metalness = 0.35;
+// material5.roughness = 0.2;
 
 const cubeBlue = new THREE.Mesh(geometry5, material5);
-cubeBlue.position.set(0, 1, 1);
+cubeBlue.position.set(0, 0, 0);
 
 const geometry6 = new THREE.SphereBufferGeometry(0.5, 32, 32);
 const material6 = new THREE.MeshStandardMaterial();
@@ -160,13 +183,13 @@ sphere.position.set(0, -1, 1);
 // scene.add(cube, sphere);
 
 scene.add(
-  cubePurple,
-  cubePink,
-  cubeBlue,
-  cubeWhite,
-  cubeYellow,
-  cubeGreen,
-  sphere
+  // cubePurple,
+  // cubePink,
+  cubeBlue
+  // cubeWhite
+  // cubeYellow,
+  // cubeGreen,
+  // sphere
 );
 
 // Mouse Listener
@@ -189,7 +212,7 @@ const aspect = {
 
 // const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0.1, 1000);
 const camera = new THREE.PerspectiveCamera(75, aspect.width / aspect.height);
-camera.position.z = 5;
+camera.position.z = 2;
 scene.add(camera);
 
 // Renderer
