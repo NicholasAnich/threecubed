@@ -67,11 +67,21 @@ const gui = new dat.GUI();
 //   .name('Point Intensity');
 
 //5 ) Direct Area Light
-const rectAreaLight = new THREE.RectAreaLight('#5D3FD3', 3, 2, 2);
-rectAreaLight.position.z = 0.5;
-scene.add(rectAreaLight);
-gui.add(rectAreaLight, 'width').min(1).max(5).step(0.1).name('width');
-gui.add(rectAreaLight, 'height').min(1).max(5).step(0.1).name('height');
+// const rectAreaLight = new THREE.RectAreaLight('#5D3FD3', 3, 2, 2);
+// rectAreaLight.position.z = 0.5;
+// scene.add(rectAreaLight);
+// gui.add(rectAreaLight, 'width').min(1).max(5).step(0.1).name('width');
+// gui.add(rectAreaLight, 'height').min(1).max(5).step(0.1).name('height');
+
+//6 ) SPOT LIGHT (similar to flashlight)
+const spotLight = new THREE.SpotLight('magenta', 1, 8, Math.PI * 0.25, 0.1, 1);
+scene.add(spotLight);
+gui.add(spotLight.position, 'z').min(-3).max(5).step(0.1).name('Z spotlight');
+gui.add(spotLight, 'angle').min(0).max(3).step(0.1).name('spotlight Angle');
+gui.add(spotLight, 'penumbra').min(0).max(1).step(0.1).name('Penumbra');
+spotLight.position.z = 2;
+const spotLightHelper = new THREE.SpotLightHelper(spotLight);
+scene.add(spotLightHelper);
 
 //LoadingManger
 const loadingManager = new THREE.LoadingManager();
