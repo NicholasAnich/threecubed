@@ -1,14 +1,68 @@
 import './style.css';
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
+import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader';
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
+import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader';
+import { FBXLoader } from 'three/examples/jsm/loaders/FBXLoader';
 import * as dat from 'dat.gui';
 
 //Scene
 const scene = new THREE.Scene();
 
+// Lights
+const ambientLight = new THREE.AmbientLight(0xffffff, 3);
+const directionalLight = new THREE.DirectionalLight(0xbbccff, 1.8);
+directionalLight.position.z = 3;
+scene.add(ambientLight, directionalLight);
+
 //Debugging
 // const gui = new dat.GUI();
 
+// OBJLoader
+// const objloader = new OBJLoader();
+
+// Loading Model
+// objloader.load('models/suzan.obj', (object) => {
+//   // object.position.y = 1;
+//   // object.children[0].position.z = -3
+//   object.children[0].material = new THREE.MeshBasicMaterial({ color: 'teal' });
+//   scene.add(object);
+// });
+
+// GLTFLoader
+const gltfLoader = new GLTFLoader();
+
+// DRACOLoader
+const dracoloader = new DRACOLoader();
+dracoloader.setDecoderPath('/draco/');
+gltfLoader.setDRACOLoader(dracoloader);
+
+// FBXLoader
+const fbxloader = new FBXLoader();
+
+let animationMixer = null;
+
+fbxloader.load('models/Run.fbx', (fbx) => {
+  animationMixer = new THREE.AnimationMixer(fbx);
+  const clipAction = animationMixer.clipAction(fbx.animations[0]);
+  clipAction.play();
+  fbx.scale.set(0.01, 0.01, 0.01);
+  scene.add(fbx);
+  console.log(fbx);
+});
+
+// Loading GLTF Model
+// let animationMixer = null;
+
+// gltfLoader.load('models/animatedCube.glb', (glb) => {
+//   animationMixer = new THREE.AnimationMixer(glb.scene);
+//   const clipAction = animationMixer.clipAction(glb.animations[0]);
+//   clipAction.play();
+//   glb.scene.scale.set(0.5, 0.5, 0.5);
+//   scene.add(glb.scene);
+//   console.log(glb);
+// });
 //Resizing
 window.addEventListener('resize', () => {
   //Update Size
@@ -44,10 +98,18 @@ orbitControls.enableDamping = true;
 
 //Clock Class
 const clock = new THREE.Clock();
+let previousTime = 0;
 
 const animate = () => {
   //GetElapsedTime
-  const elapsedTime = clock.getElapsedTime();
+  const elapsedTime = clock.getElapsedTime(); //0.002 + 0.002 = 0.004
+  const frameTime = elapsedTime - previousTime; //0.004 - 0.002 = 0.002
+  previousTime = elapsedTime; // previousTime = 0.002
+
+  //Update AnimationMixer
+  if (animationMixer) {
+    animationMixer.update(frameTime);
+  }
 
   //Update Controls
   orbitControls.update();
@@ -59,3 +121,9 @@ const animate = () => {
   window.requestAnimationFrame(animate);
 };
 animate();
+
+// 1) Weight
+// 2) Data Type
+// 3) Compression
+// 4) Copyright
+// 5) etc...
