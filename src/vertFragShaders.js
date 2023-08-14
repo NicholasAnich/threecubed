@@ -19,13 +19,24 @@ camera.position.z = 3;
 scene.add(camera);
 
 // OBJECT
-const geometry = new THREE.PlaneBufferGeometry(1, 1);
+const geometry = new THREE.PlaneBufferGeometry(1, 1, 64, 64);
+console.log(geometry);
 const material = new THREE.RawShaderMaterial({
   vertexShader: vShader,
   fragmentShader: fShader,
 });
 const cube = new THREE.Mesh(geometry, material);
 scene.add(cube);
+
+const amount = geometry.attributes.position.count;
+const newAttributeArray = new Float32Array(amount);
+for (let i = 0; i < amount; i++) {
+  newAttributeArray[i] = Math.random();
+}
+geometry.setAttribute(
+  'a_modulus',
+  new THREE.BufferAttribute(newAttributeArray, 1)
+);
 
 // RENDERER
 const canvas = document.querySelector('.draw');
