@@ -19,7 +19,8 @@ const aspect = {
 };
 
 const camera = new THREE.PerspectiveCamera(70, aspect.width / aspect.height);
-camera.position.z = 3;
+camera.position.z = 2;
+camera.position.y = 1;
 scene.add(camera);
 
 const gltfLoader = new GLTFLoader();
@@ -37,8 +38,8 @@ let animationMixer = null;
 
 gltfLoader.load('models/tenzenAnimated.glb', (glb) => {
   animationMixer = new THREE.AnimationMixer(glb.scene);
-  //   const clipAction = animationMixer.clipAction(glb.animations[0]);
-  //   clipAction.play();
+  const clipAction = animationMixer.clipAction(glb.animations[9]);
+  clipAction.play();
   glb.scene.scale.set(0.5, 0.5, 0.5);
   scene.add(glb.scene);
   console.log(glb);
@@ -60,6 +61,7 @@ window.addEventListener('resize', () => {
 const canvas = document.querySelector('.draw');
 const renderer = new THREE.WebGLRenderer({ canvas });
 renderer.setSize(aspect.width, aspect.height);
+renderer.physicallyCorrectLights = true;
 
 const orbitControls = new OrbitControls(scene, canvas);
 

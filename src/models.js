@@ -75,7 +75,7 @@ let animationMixer = null;
 gltfLoader.load('models/tenzenAnimated.glb', (glb) => {
   animationMixer = new THREE.AnimationMixer(glb.scene);
   scene.add(glb.scene);
-  const clipAction = animationMixer.clipAction(glb.animations[3]);
+  // const clipAction = animationMixer.clipAction(glb.animations[3]);
   glb.scene.position.x = 2.5;
   glb.scene.position.y = -0.8;
   // clipAction.play();
