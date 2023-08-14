@@ -8,6 +8,20 @@ import fShader from './shaders/fragment.glsl';
 // SCENE
 const scene = new THREE.Scene();
 
+// Datui
+const gui = new dat.GUI();
+
+// cursor
+const cursor = {
+  x: 0,
+  y: 0,
+};
+
+window.addEventListener('mousemove', (e) => {
+  cursor.x = e.clientX / window.innerWidth;
+  cursor.y = e.clientY / window.innerHeight;
+});
+
 const aspect = {
   width: window.innerWidth,
   height: window.innerHeight,
@@ -24,6 +38,14 @@ console.log(geometry);
 const material = new THREE.RawShaderMaterial({
   vertexShader: vShader,
   fragmentShader: fShader,
+  side: THREE.DoubleSide,
+  uniforms: {
+    u_amplitude: { value: 20.0 },
+    u_time: { value: 0 },
+    u_color: { value: new THREE.Color('teal') },
+    u_timecolor: { value: 0 },
+    u_cursorcolor: { value: new THREE.Vector2(cursor.x, cursor.y) },
+  },
 });
 const cube = new THREE.Mesh(geometry, material);
 scene.add(cube);
@@ -69,8 +91,11 @@ let previousTime = 0;
 function animate() {
   const elapsedTime = clock.getElapsedTime();
 
-  //   cube.rotation.x = elapsedTime * 0.25;
-  //   cube.rotation.y = elapsedTime * 0.25;
+  //Update u_time
+  material.uniforms.u_time.value = elapsedTime;
+  material.uniforms.u_timecolor.value = elapsedTime;
+  material.uniforms.u_cursorcolor.value.x = cursor.x;
+  material.uniforms.u_cursorcolor.value.y = cursor.y;
 
   orbitControls.update();
 
