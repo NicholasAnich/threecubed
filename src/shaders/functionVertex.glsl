@@ -1,30 +1,19 @@
 uniform mat4 modelMatrix;
 uniform mat4 viewMatrix;
 uniform mat4 projectionMatrix;
-uniform float u_amplitude;
-uniform float u_time;
-
 
 attribute vec3 position;
 attribute vec2 uv;
-attribute float a_modulus;
 
-varying vec3 v_position;
 varying vec2 v_uv;
-varying float v_a_modulus;
-
+varying vec3 v_position;
 
 void main() {
     vec4 modelPosition = modelMatrix * vec4(position, 1.0);
-    modelPosition.y += sin(modelPosition.x * u_amplitude + u_time) * 0.15;
-    modelPosition.z += a_modulus * 0.1;
     vec4 viewPosition = viewMatrix * modelPosition;
     vec4 projectionPosition = projectionMatrix * viewPosition;
 
     gl_Position = projectionPosition;
-
-    v_position = position;
-    v_uv = uv;
-    v_a_modulus = a_modulus;
+    v_uv=uv;
+    v_position=position;
 }
-

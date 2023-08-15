@@ -8,6 +8,20 @@ import fShader from './shaders/fragment.glsl';
 // SCENE
 const scene = new THREE.Scene();
 
+// Datui
+const gui = new dat.GUI();
+
+// cursor
+const cursor = {
+  x: 0,
+  y: 0,
+};
+
+window.addEventListener('mousemove', (e) => {
+  cursor.x = e.clientX / window.innerWidth;
+  cursor.y = e.clientY / window.innerHeight;
+});
+
 const aspect = {
   width: window.innerWidth,
   height: window.innerHeight,
@@ -15,17 +29,36 @@ const aspect = {
 
 // CAMERA
 const camera = new THREE.PerspectiveCamera(75, aspect.width / aspect.height);
-camera.position.z = 3;
+camera.position.z = 1;
 scene.add(camera);
 
 // OBJECT
-const geometry = new THREE.PlaneBufferGeometry(1, 1);
+const geometry = new THREE.PlaneBufferGeometry(1, 1, 64, 64);
+console.log(geometry);
 const material = new THREE.RawShaderMaterial({
   vertexShader: vShader,
   fragmentShader: fShader,
+  side: THREE.DoubleSide,
+  uniforms: {
+    u_amplitude: { value: 20.0 },
+    u_time: { value: 0 },
+    u_color: { value: new THREE.Color('teal') },
+    u_timecolor: { value: 0 },
+    u_cursorcolor: { value: new THREE.Vector2(cursor.x, cursor.y) },
+  },
 });
 const cube = new THREE.Mesh(geometry, material);
 scene.add(cube);
+
+const amount = geometry.attributes.position.count;
+const newAttributeArray = new Float32Array(amount);
+for (let i = 0; i < amount; i++) {
+  newAttributeArray[i] = Math.random();
+}
+geometry.setAttribute(
+  'a_modulus',
+  new THREE.BufferAttribute(newAttributeArray, 1)
+);
 
 // RENDERER
 const canvas = document.querySelector('.draw');
@@ -58,8 +91,11 @@ let previousTime = 0;
 function animate() {
   const elapsedTime = clock.getElapsedTime();
 
-  //   cube.rotation.x = elapsedTime * 0.25;
-  //   cube.rotation.y = elapsedTime * 0.25;
+  //Update u_time
+  material.uniforms.u_time.value = elapsedTime;
+  material.uniforms.u_timecolor.value = elapsedTime;
+  material.uniforms.u_cursorcolor.value.x = cursor.x;
+  material.uniforms.u_cursorcolor.value.y = cursor.y;
 
   orbitControls.update();
 

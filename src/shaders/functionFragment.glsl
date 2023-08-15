@@ -1,0 +1,42 @@
+precision mediump float;
+
+varying vec2 v_uv;
+varying vec3 v_position;
+
+void main() {
+    // vec2 copy_uv = v_uv;
+
+    // *Mix Function
+    // vec3 mixing = mix(vec3(0.0,0.0,1.0), vec3(0.0,1.0,0.0), v_uv.x);
+
+    // *Clamp Function
+    // vec3 color = vec3(1.0,1.0,1.0);
+    // color.r = clamp(v_uv.y,0.0, 1.0);
+    // color.g = clamp(v_uv.x, 0.0, 1.0);
+    // color.b = clamp(v_uv.x, 0.0, 1.0);
+
+    // *Step Function
+    vec3 color = vec3(1.0,1.0,1.0);
+    color.r = step(0.0, v_position.x);
+    color.g = step(0.0, v_position.y);
+
+
+
+    // if(copy_uv.x > 0.5) {
+    //     copy_uv.x = 0.0;
+    // } else {
+    //     copy_uv.x = 1.0;
+    // }
+
+    // float copy_uvx = step(v_uv.x, 0.5);
+
+    // gl_FragColor = vec4(copy_uv, 1.0, 1.0);
+    // gl_FragColor = vec4(copy_uvx,v_uv.y, 1.0, 1.0);
+
+    // *Mixing colors
+    // gl_FragColor = vec4(mixing, 1.0);
+
+    // *Clamping colors
+    gl_FragColor = vec4(color, 1.0);
+
+}
