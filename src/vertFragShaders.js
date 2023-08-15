@@ -29,7 +29,7 @@ const aspect = {
 
 // CAMERA
 const camera = new THREE.PerspectiveCamera(75, aspect.width / aspect.height);
-camera.position.z = 3;
+camera.position.z = 1;
 scene.add(camera);
 
 // OBJECT
