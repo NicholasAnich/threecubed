@@ -23,7 +23,8 @@ void main() {
     // *SmoothStep
     vec3 color = vec3(1.0,1.0,1.0);
     color.r = smoothstep(0.0, 0.04, v_position.x);
-    color.g = smoothstep(0.0,0.04, v_position.y);
+    // color.g = smoothstep(0.0,0.04, v_position.y);
+    color.g = smoothstep(0.1,0.05, v_position.y);
 
 
 
