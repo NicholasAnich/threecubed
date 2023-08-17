@@ -16,9 +16,14 @@ void main() {
     // color.b = clamp(v_uv.x, 0.0, 1.0);
 
     // *Step Function
+    // vec3 color = vec3(1.0,1.0,1.0);
+    // color.r = step(0.0, v_position.x);
+    // color.g = step(0.0, v_position.y);
+
+    // *SmoothStep
     vec3 color = vec3(1.0,1.0,1.0);
-    color.r = step(0.0, v_position.x);
-    color.g = step(0.0, v_position.y);
+    color.r = smoothstep(0.0, 0.04, v_position.x);
+    color.g = smoothstep(0.0,0.04, v_position.y);
 
 
 
