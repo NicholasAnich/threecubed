@@ -5,7 +5,7 @@ varying vec3 v_position;
 uniform float u_time;
 
 
-// *Random
+// *Random=================================================================================================* 
 // Simplex 2D noise
 //
 vec3 permute(vec3 x) { return mod(((x*34.0)+1.0)*x, 289.0); }
@@ -36,7 +36,7 @@ float snoise(vec2 v){
   g.yz = a0.yz * x12.xz + h.yz * x12.yw;
   return 130.0 * dot(m, g);
 }
-
+// *========================================================================================================*
 
 void main() {
     // vec2 copy_uv = v_uv;
@@ -82,8 +82,8 @@ void main() {
     // vec3 color = random(v_uv)*vec3(.5);
     // gl_FragColor = vec4(color, 1.0);
 
-    float simple_x = 0.5+clamp(snoise(vec2(v_uv *20.0+u_time)),0.0,1.0);
-    gl_FragColor = vec4(simple_x*0.2,simple_x,simple_x, 1.0);
+    // float simple_x = 0.5+clamp(snoise(vec2(v_uv *20.0+u_time)),0.0,1.0);
+    // gl_FragColor = vec4(simple_x*0.2,simple_x,simple_x, 1.0);
     // gl_FragColor = vec4(vec3(simple_x), 1.0);
 
 
